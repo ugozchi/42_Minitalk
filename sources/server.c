@@ -6,14 +6,14 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 10:19:48 by uzanchi           #+#    #+#             */
-/*   Updated: 2024/08/28 10:43:27 by uzanchi          ###   ########.fr       */
+/*   Updated: 2024/09/25 14:39:30 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
 /*Checks that the message buffer can be freed, frees it and sets it to NULL*/
-int	free_resources(char **message)
+/*int	free_resources(char **message)
 {
 	if (*message)
 	{
@@ -21,7 +21,7 @@ int	free_resources(char **message)
 		*message = NULL;
 	}
 	return (0);
-}
+}*/
 
 /*Adds the character 'c' at the end of the string pointed by 'str'. If 'str' is
 not big enough to receive the new character, memory is reallocated to increase
@@ -55,6 +55,10 @@ void	add_char_to_str(char c, char **str)
 	(*str)[++size] = '\0';
 }
 
+void	send_ack(pid_t pid)
+{
+	send_signal(pid, SIGUSR1);
+}
 /*Functions checks that only SIGUSR1 and SIGUSR2 are processed by the server.
 It accumulates bits received by the client in a buffer int before storing each
 byte in a static char * 'message'
@@ -83,6 +87,7 @@ void	handle_sigusr_server(int signum, siginfo_t *info, void *context)
 		buffer = 0;
 		bits_received = 0;
 	}
+	send_ack(info->si_pid);
 }
 
 /*Displays the PID of the server once it is launched and then waits for SIGUSR1

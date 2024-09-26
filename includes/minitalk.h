@@ -6,7 +6,7 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 10:15:55 by uzanchi           #+#    #+#             */
-/*   Updated: 2024/08/28 10:16:46 by uzanchi          ###   ########.fr       */
+/*   Updated: 2024/09/25 12:26:15 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef enum e_bool
 }	t_bool;
 
 /*common_utils*/
-void	send_signal(pid_t pid, int signum);
+void			send_signal(pid_t pid, int signum);
+int				free_resources(char	**message);
 
 #endif

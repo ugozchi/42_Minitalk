@@ -6,7 +6,7 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 10:17:57 by uzanchi           #+#    #+#             */
-/*   Updated: 2024/09/24 15:04:56 by uzanchi          ###   ########.fr       */
+/*   Updated: 2024/09/25 14:27:52 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,20 @@ t_bool	argument_is_valid(int argc, char **argv)
 	return (TRUE);
 }
 
+void	wait_for_ack(void)
+{
+	sigset_t	mask;
+	int	signum;
+	
+	sigemptyset(&mask);
+	sigaddset(&mask, SIGUSR1);
+	if (sigwait(&mask, &signum) != 0)
+	{
+		ft_printf_colour(RED_BOLD, "Error waiting for signal");
+	exit(EXIT_FAILURE);
+	}
+}
+
 /*Sends a bit encoded message to the server whose PID is 'pid' with SIGUSR1 to
 represent 0 and SIGUSR2 to represent 1
 Once the message is sent, 11111111 (bit representation of the NULL terminator) is
@@ -56,6 +70,7 @@ void	send_message(int pid, char *str)
 				send_signal(pid, SIGUSR2);
 			else
 				send_signal(pid, SIGUSR1);
+			wait_for_ack();
 			usleep(80);
 		}
 	}
@@ -63,7 +78,8 @@ void	send_message(int pid, char *str)
 	while (i--)
 	{
 		send_signal(pid, SIGUSR1);
-		usleep(80);
+		wait_for_ack();
+		usleep(800);
 	}
 }
 
@@ -83,16 +99,21 @@ Expects a signal from the server once the message has been received*/
 int	main(int argc, char **argv)
 {
 	struct sigaction	sa;
+	sigset_t	mask;
 
 	if (!argument_is_valid(argc, argv))
 		return (1);
 	sa.sa_handler = handle_sigusr_client;
+	sa.sa_flags = SA_RESTART;
 	sigemptyset(&sa.sa_mask);
 	if (sigaction(SIGUSR2, &sa, NULL) == -1)
 	{
 		ft_printf(RED_BOLD, ERR_SIGAC);
 		return (1);
 	}
+	sigemptyset(&mask);
+	sigaddset(&mask, SIGUSR1);
+	sigprocmask(SIG_BLOCK, &mask, NULL);
 	send_message(ft_atoi(argv[1]), argv[2]);
 	pause();
 	return (0);
