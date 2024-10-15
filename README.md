@@ -54,6 +54,26 @@ Pour lancer le programme :
 ![client](.media/client.png)
 
 Une fois le message envoyé il est transmis au server :
+
 ![recu](.media/recu.png)
 
 <br>
+
+Des messages de toutes tailles avec des caractères Unicode sont acceptés !
+
+![big](.media/big.png)
+
+## Note Final et Commentaires 📔
+
+<br>
+
+| |
+| --- |
+| ![](.media/note.png) |
+
+
+| | |
+| --- | --- |
+| Correcteur 1 | <img src=".media/com1.png" /> |
+| Correcteur 2 | <img src=".media/com2.png" /> |
+| Correcteur 3 | <img src=".media/com3.png" /> |
