@@ -9,7 +9,7 @@ Le client encode chaque bit du message et utilise `SIGUSR1` pour envoyer des 0 a
 Une fois qu'un terminateur nul `\0` a été reçu par le serveur, il imprime le message et renvoie `SIGUSR2` au client pour fermer la communication. Les caractères Unicode sont pris en charge par le client et le serveur.
 Vous pouvez trouver le sujet [ici](en.subject.pdf).
 
-# Télécharge et test !
+# Télécharge et test ⬇️
 
 Clone le projet.
 
